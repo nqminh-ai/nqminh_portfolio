@@ -248,6 +248,31 @@ section{position:relative;z-index:1}
 .cert-action{font-family:var(--mono);font-size:.52rem;color:var(--cyan);letter-spacing:.06em;text-transform:uppercase}
 .cert-issuer,.cert-date{font-size:.72rem;color:var(--text);line-height:1.55}
 .cert-date{margin-top:.25rem;color:var(--muted)}
+
+/*  AWARDS  */
+.award-sec{background:linear-gradient(to bottom,transparent,rgba(201,168,76,.04),transparent)}
+.award-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:1.5rem;align-items:stretch}
+.award-card{position:relative;background:rgba(12,10,26,.88);border:1px solid var(--aw-line);padding:1.05rem;display:flex;flex-direction:column;text-align:left;cursor:none;transition:transform .25s,border-color .25s,box-shadow .25s;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
+.award-card:hover,.award-card:focus-visible{outline:0;transform:translateY(-5px);border-color:var(--aw);box-shadow:0 14px 40px -22px var(--aw)}
+.award-card.tier-1{--aw:#E8C96A;--aw-line:rgba(232,201,106,.34);--aw-soft:rgba(232,201,106,.1)}
+.award-card.tier-2{--aw:#C9D4E4;--aw-line:rgba(201,212,228,.28);--aw-soft:rgba(201,212,228,.09)}
+.award-card.tier-3{--aw:#C98A5E;--aw-line:rgba(201,138,94,.28);--aw-soft:rgba(201,138,94,.09)}
+/* Rank chip doubles as the tier marker so the three levels read at a glance, not from the text */
+.award-rank{position:absolute;top:0;right:0;display:flex;align-items:center;gap:.35rem;padding:.34rem .6rem;background:var(--aw-soft);border-left:1px solid var(--aw-line);border-bottom:1px solid var(--aw-line);font-family:var(--mono);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:var(--aw)}
+.award-medal{width:15px;height:15px;flex:none;border-radius:50%;background:radial-gradient(circle at 34% 30%,var(--aw),rgba(0,0,0,.65));box-shadow:0 0 9px -1px var(--aw)}
+.award-thumb{position:relative;aspect-ratio:1.5/1;border:1px solid var(--aw-line);overflow:hidden;margin-bottom:.95rem;background:linear-gradient(135deg,var(--aw-soft),rgba(6,4,16,.9)),repeating-linear-gradient(90deg,rgba(201,168,76,.06) 0 1px,transparent 1px 20px)}
+.award-thumb img{width:100%;height:100%;display:block;object-fit:cover}
+/* No photo yet → the frame still reads as a deliberate placeholder rather than a broken image */
+.award-thumb.is-missing img{display:none}
+.award-thumb.is-missing::before{content:attr(data-placeholder);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:1rem;text-align:center;font-family:var(--mono);font-size:.52rem;letter-spacing:.14em;line-height:1.9;color:rgba(240,235,224,.42)}
+.award-tier{font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--aw);margin-bottom:.4rem}
+.award-title{font-family:var(--sans);font-size:.94rem;font-weight:600;line-height:1.4;color:var(--ivory);margin-bottom:.3rem}
+.award-event{font-family:var(--serif);font-size:.82rem;font-style:italic;color:var(--gold);margin-bottom:.6rem}
+.award-meta{display:flex;flex-wrap:wrap;gap:.35rem .8rem;font-family:var(--mono);font-size:.55rem;letter-spacing:.05em;color:var(--muted);margin-bottom:.65rem}
+.award-desc{font-size:.75rem;line-height:1.65;color:var(--text);margin-bottom:.85rem}
+.award-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:auto}
+.award-tags .tag{font-family:var(--mono);font-size:.5rem;letter-spacing:.06em;padding:.2rem .45rem;border:1px solid var(--aw-line);color:var(--aw)}
+@media(max-width:620px){.award-grid{grid-template-columns:1fr}}
 .cert-modal{position:fixed;inset:0;z-index:780;display:none;align-items:center;justify-content:center;padding:1.25rem;background:rgba(4,3,12,.78);backdrop-filter:blur(14px)}
 .cert-modal.is-open{display:flex}
 .cert-dialog{position:relative;width:min(980px,100%);max-height:min(760px,calc(100vh - 2.5rem));overflow:auto;background:var(--panel);border:1px solid rgba(201,168,76,.28);clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));box-shadow:0 28px 80px rgba(0,0,0,.55)}
@@ -477,6 +502,7 @@ footer .ft-serif{font-family:var(--serif);font-style:italic;font-size:.82rem;col
     <li><a href="#experience">Experience</a></li>
     <li><a href="#photography">Photos</a></li>
     <li><a href="#projects">Projects</a></li>
+    <li><a href="#awards">Awards</a></li>
     <li><a href="#certificates">Certs</a></li>
     <li><a href="#job-simulations">Sims</a></li>
     <li><a href="#writing">Writing</a></li>
@@ -687,31 +713,31 @@ footer .ft-serif{font-family:var(--serif);font-style:italic;font-size:.82rem;col
   <div class="photo-gallery">
     <div class="photo-stack reveal" id="photo-stack" aria-live="polite">
       <figure class="photo-slide is-active" data-caption="Frame 01 - City light study">
-        <img src="image/IMG_5034.JPG" alt="Photography frame 01 by Brian" loading="eager">
+        <img src="image/web/IMG_5034.jpg" width="1200" height="900" alt="Photography frame 01 by Brian" loading="eager">
       </figure>
       <figure class="photo-slide is-next" data-caption="Frame 02 - Soft contrast">
-        <img src="image/IMG_5029.JPG" alt="Photography frame 02 by Brian" loading="lazy">
+        <img src="image/web/IMG_5029.jpg" width="1200" height="900" alt="Photography frame 02 by Brian" loading="lazy">
       </figure>
       <figure class="photo-slide" data-caption="Frame 03 - Still afternoon">
-        <img src="image/IMG_5027.JPG" alt="Photography frame 03 by Brian" loading="lazy">
+        <img src="image/web/IMG_5027.jpg" width="1200" height="900" alt="Photography frame 03 by Brian" loading="lazy">
       </figure>
       <figure class="photo-slide" data-caption="Frame 04 - Warm composition">
-        <img src="image/IMG_5026.JPG" alt="Photography frame 04 by Brian" loading="lazy">
+        <img src="image/web/IMG_5026.jpg" width="1200" height="900" alt="Photography frame 04 by Brian" loading="lazy">
       </figure>
       <figure class="photo-slide" data-caption="Frame 05 - Quiet symmetry">
-        <img src="image/IMG_5024.JPG" alt="Photography frame 05 by Brian" loading="lazy">
+        <img src="image/web/IMG_5024.jpg" width="1200" height="900" alt="Photography frame 05 by Brian" loading="lazy">
       </figure>
       <figure class="photo-slide" data-caption="Frame 06 - Motion and pause">
-        <img src="image/IMG_5001.JPG" alt="Photography frame 06 by Brian" loading="lazy">
+        <img src="image/web/IMG_5001.jpg" width="1200" height="900" alt="Photography frame 06 by Brian" loading="lazy">
       </figure>
       <figure class="photo-slide" data-caption="Frame 07 - Field notes">
-        <img src="image/IMG_4999.JPG" alt="Photography frame 07 by Brian" loading="lazy">
+        <img src="image/web/IMG_4999.jpg" width="1200" height="900" alt="Photography frame 07 by Brian" loading="lazy">
       </figure>
       <figure class="photo-slide" data-caption="Frame 08 - Open air">
-        <img src="image/IMG_4770.JPG" alt="Photography frame 08 by Brian" loading="lazy">
+        <img src="image/web/IMG_4770.jpg" width="1200" height="900" alt="Photography frame 08 by Brian" loading="lazy">
       </figure>
       <figure class="photo-slide" data-caption="Frame 09 - Memory texture">
-        <img src="image/IMG_4762.JPG" alt="Photography frame 09 by Brian" loading="lazy">
+        <img src="image/web/IMG_4762.jpg" width="1200" height="900" alt="Photography frame 09 by Brian" loading="lazy">
       </figure>
     </div>
     <div class="photo-copy reveal">
@@ -866,10 +892,22 @@ footer .ft-serif{font-family:var(--serif);font-style:italic;font-size:.82rem;col
   </div>
 </section>
 
+<!--  AWARDS  -->
+<section id="awards" class="sec-wrap award-sec">
+  <div class="sec-head">
+    <span class="sec-num">06</span>
+    <span class="sec-title">Awards</span>
+    <div class="sec-line"></div>
+    <span class="sec-note"> &nbsp;competition results</span>
+  </div>
+  <div class="cert-group-label">Competition Awards — three tiers</div>
+  <div class="award-grid" id="award-grid"></div>
+</section>
+
 <!--  CERTIFICATES  -->
 <section id="certificates" class="sec-wrap cert-sec">
   <div class="sec-head">
-    <span class="sec-num">06</span>
+    <span class="sec-num">07</span>
     <span class="sec-title">Certificates</span>
     <div class="sec-line"></div>
     <span class="sec-note"> &nbsp;specializations</span>
@@ -886,7 +924,7 @@ footer .ft-serif{font-family:var(--serif);font-style:italic;font-size:.82rem;col
 <!--  JOB SIMULATIONS  -->
 <section id="job-simulations" class="sec-wrap job-sec">
   <div class="sec-head">
-    <span class="sec-num">07</span>
+    <span class="sec-num">08</span>
     <span class="sec-title">Job Simulation</span>
     <div class="sec-line"></div>
     <span class="sec-note"> &nbsp;virtual experience</span>
@@ -898,7 +936,7 @@ footer .ft-serif{font-family:var(--serif);font-style:italic;font-size:.82rem;col
 <!--  RESEARCH & WRITING  -->
 <section id="writing" class="sec-wrap writing-sec">
   <div class="sec-head">
-    <span class="sec-num">08</span>
+    <span class="sec-num">09</span>
     <span class="sec-title">Research & Writing</span>
     <div class="sec-line"></div>
     <span class="sec-note"> &nbsp;technical notes</span>
@@ -909,7 +947,7 @@ footer .ft-serif{font-family:var(--serif);font-style:italic;font-size:.82rem;col
 <!--  EDUCATION  -->
 <section id="education" class="sec-wrap">
   <div class="sec-head">
-    <span class="sec-num">09</span>
+    <span class="sec-num">10</span>
     <span class="sec-title">Education</span>
     <div class="sec-line"></div>
     <span class="sec-note"> &nbsp;sempre studendo</span>
@@ -983,13 +1021,56 @@ footer .ft-serif{font-family:var(--serif);font-style:italic;font-size:.82rem;col
 </div>
 
 <script>
+/*  ANIMATION BUDGET  */
+/* Every canvas on this page used to run its own uncapped requestAnimationFrame loop, all of them
+   at once, forever — including the ones scrolled far off screen. gateLoop() is the throttle:
+   a loop only burns frames while its element is actually near the viewport and the tab is
+   visible, and never faster than the fps it asks for. Pass target=null for the fixed-position
+   backgrounds, which are always on screen but still stop when the tab is hidden. */
+const REDUCE_MOTION=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const LOW_POWER=(navigator.hardwareConcurrency||8)<=4;
+function gateLoop(target,draw,fps){
+  const minDt=fps?1000/fps-2:0;
+  let id=0,last=0,onScreen=!target,active=false;
+  function frame(ts){
+    id=requestAnimationFrame(frame);
+    if(minDt&&ts-last<minDt)return;
+    last=ts;draw(ts);
+  }
+  function sync(){
+    const run=onScreen&&!document.hidden;
+    if(run===active)return;
+    active=run;
+    if(run){last=0;id=requestAnimationFrame(frame);}else cancelAnimationFrame(id);
+  }
+  if(target&&'IntersectionObserver'in window){
+    new IntersectionObserver(entries=>{onScreen=entries[0].isIntersecting;sync();},{rootMargin:'200px'}).observe(target);
+  }else{onScreen=true;}
+  document.addEventListener('visibilitychange',sync);
+  sync();
+}
+
 /*  CURSOR  */
 const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
-(function ac(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;cur.style.left=mx+'px';cur.style.top=my+'px';ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ac)})();
+/* The trailing ring only needs frames while it is still catching up to the pointer. Once it
+   settles the loop parks itself, so an idle page costs nothing. */
+const FINE_POINTER=!(window.matchMedia&&window.matchMedia('(hover: none)').matches);
+if(FINE_POINTER){
+  let curRaf=0;
+  const step=()=>{
+    rx+=(mx-rx)*.14;ry+=(my-ry)*.14;
+    cur.style.left=mx+'px';cur.style.top=my+'px';
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    if(Math.abs(mx-rx)>.5||Math.abs(my-ry)>.5)curRaf=requestAnimationFrame(step);
+    else curRaf=0;
+  };
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(!curRaf)curRaf=requestAnimationFrame(step);},{passive:true});
+}else{
+  cur.style.display='none';ring.style.display='none';
+}
 function bindCursorFx(root=document){
-  root.querySelectorAll('a,button,.sk-card,.proj-card,.exp-card,.cert-card,.cert-page-btn,.writing-card').forEach(el=>{
+  root.querySelectorAll('a,button,.sk-card,.proj-card,.exp-card,.cert-card,.award-card,.cert-page-btn,.writing-card').forEach(el=>{
     if(el.dataset.cursorBound)return;
     el.dataset.cursorBound='1';
     el.addEventListener('mouseenter',()=>{cur.style.width='13px';cur.style.height='13px';ring.style.width='50px';ring.style.height='50px';ring.style.borderColor='rgba(201,168,76,.6)'});
@@ -1291,7 +1372,7 @@ setInterval(updateClock,1000);updateClock();
 
 /*  COSMIC FIELD — parallax starfield · nebula · constellation · comets  */
 const cc=document.getElementById('circuit-canvas'),cctx=cc.getContext('2d');
-const cosmicReduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const cosmicReduce=REDUCE_MOTION;
 let cW,cH,cDPR=1,cosmicT=0;
 let starLayers=[],nebulae=[],cNodes=[],comets=[],nebulaBuf=null;
 const crand=(a,b)=>a+Math.random()*(b-a);
@@ -1433,13 +1514,11 @@ function drawCosmos(){
   const vg=cctx.createRadialGradient(cW/2,cH*.42,0,cW/2,cH*.42,Math.max(cW,cH)*.78);
   vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(2,1,8,.55)');
   cctx.fillStyle=vg;cctx.fillRect(0,0,cW,cH);
-
-  requestAnimationFrame(drawCosmos);
 }
 
 buildCosmos();
 if(!cosmicReduce)setInterval(()=>{if(comets.length<2&&Math.random()<.5)spawnComet();},4200);
-drawCosmos();
+gateLoop(null,drawCosmos,REDUCE_MOTION?10:(LOW_POWER?20:30));
 let cosmicRz;window.addEventListener('resize',()=>{clearTimeout(cosmicRz);cosmicRz=setTimeout(buildCosmos,150);}); // debounce: rebuilding buffers on every resize tick is wasteful
 
 /*  WAVE BG (violin harmonics)  */
@@ -1459,9 +1538,8 @@ function drawWave(){
     else{g.addColorStop(0,`rgba(0,212,255,0)`);g.addColorStop(.5,`rgba(0,212,255,${al*.85})`);g.addColorStop(1,`rgba(74,142,255,0)`);}
     wctx.strokeStyle=g;wctx.lineWidth=1;wctx.stroke();
   }
-  requestAnimationFrame(drawWave);
 }
-initWave();drawWave();window.addEventListener('resize',initWave);
+initWave();gateLoop(null,drawWave,REDUCE_MOTION?10:(LOW_POWER?18:24));window.addEventListener('resize',initWave);
 
 /*  PIANO KEYS  */
 const pc=document.getElementById('piano-canvas'),pctx=pc.getContext('2d');
@@ -1479,9 +1557,8 @@ function drawPiano(){
   // Black keys
   ky=0;ki=0;
   while(ky<piH+WH){if(OCT[ki%12]===0){if(OCT[(ki+1)%12]===1){const pulse=Math.sin(piT+(ki+1)*.38)*.5+.5;const lit=pulse>.87;pctx.fillStyle=lit?'#C9A84C':'#030208';pctx.fillRect(1,ky+WH*.55,BW,BH);if(lit){pctx.shadowColor='rgba(201,168,76,.9)';pctx.shadowBlur=10;pctx.fillRect(1,ky+WH*.55,BW,BH);pctx.shadowBlur=0;}}ky+=WH;}ki++;}
-  requestAnimationFrame(drawPiano);
 }
-initPiano();drawPiano();window.addEventListener('resize',initPiano);
+initPiano();gateLoop(pc,drawPiano,20);window.addEventListener('resize',initPiano);
 
 /*  TICKER ANIMATION  */
 function jitter(base,range){return(base+(Math.random()-.5)*range).toFixed(2)}
@@ -1510,9 +1587,8 @@ function drawMC(){
   mctx.fillStyle='rgba(0,212,255,.6)';mctx.fillText(`R: ${(recData[recData.length-1]*100).toFixed(1)}%`,60,10);
   precData.push(.82+Math.random()*.1);precData.shift();
   recData.push(.78+Math.random()*.12);recData.shift();
-  requestAnimationFrame(drawMC);
 }
-initMC();drawMC();window.addEventListener('resize',initMC);
+initMC();if(mc)gateLoop(mc,drawMC,12);window.addEventListener('resize',initMC);
 
 /*  HUD BARS (hero)  */
 setTimeout(()=>{document.querySelectorAll('.hud-fill').forEach(f=>{f.style.width=f.dataset.w;});},1600);
@@ -1536,9 +1612,8 @@ function makeStringDiv(id){
     }
     // center ornament
     ctx.fillStyle='rgba(201,168,76,.3)';ctx.font='14px serif';ctx.textAlign='center';ctx.fillText('',W/2,H/2+5);ctx.textAlign='left';
-    requestAnimationFrame(draw);
   }
-  draw();
+  gateLoop(c,draw,24);
 }
 makeStringDiv('sdiv1');makeStringDiv('sdiv2');makeStringDiv('sdiv3');makeStringDiv('sdiv3_5');
 
@@ -1594,9 +1669,8 @@ function drawNotation(){
   for(let x2=40;x2<=nW-16;x2+=2){const y2=wy+Math.sin(x2*.045+nT*2.2)*7*Math.sin((x2-40)*.011);x2===40?nctx.moveTo(x2,y2):nctx.lineTo(x2,y2);}
   nctx.strokeStyle='rgba(0,212,255,.28)';nctx.lineWidth=1.2;nctx.stroke();
   nctx.font='8px JetBrains Mono,monospace';nctx.fillStyle='rgba(201,168,76,.2)';nctx.fillText(' violin ',42,nH-5);
-  requestAnimationFrame(drawNotation);
 }
-drawNotation();
+if(nc)gateLoop(nc,drawNotation,20);
 
 /*  TYPING  */
 const titles=['Artificial Intelligence Engineer','Quantitative Analyst','Quantum Computing Researcher','Data Scientist','AI Researcher','Machine Learning Engineer','Computer Vision Specialist'];
@@ -1642,6 +1716,52 @@ const jobSimulations=[
   {id:'deloitte-data-analytics',title:'Deloitte Data Analytics Job Simulation',type:'Job Simulation',issuer:'Deloitte',date:'Completed 2026',credentialId:'Forage virtual experience',file:'job_simulation/Deloitte_Data Analytics.pdf',description:'A practical analytics simulation focused on interpreting business data, investigating patterns, communicating findings, and turning analysis into client-ready recommendations.',skills:['Data Analytics','Business Insight','Data Interpretation','Client Reporting']},
   {id:'jpmorgan-quantitative-research',title:'JPMorgan Chase & Co. Quantitative Research Job Simulation',type:'Job Simulation',issuer:'JPMorgan Chase & Co.',date:'Completed 2026',credentialId:'Forage virtual experience',file:'job_simulation/JPMorgan Chase & Co_Quantitative Research.pdf',description:'A quantitative research simulation covering financial modelling, analytical reasoning, market-oriented problem solving, and research-style communication.',skills:['Quantitative Research','Financial Modelling','Python','Risk Analysis']}
 ];
+/*  AWARDS — three tiers, highest first. Drop the matching photo into award/ and it appears
+    automatically; until then the card renders a placeholder frame instead of a broken image.  */
+const awards=[
+  {
+    id:'vaic-2026-top20',
+    tier:1,rank:'Tier I',rankLabel:'Top 20',
+    title:'Top 20 National Finalist',
+    event:'Vietnam AI Innovation Challenge (VAIC) 2026',
+    issuer:'National Innovation Center (NIC) · Meta · AI for Vietnam Foundation · FPT Corporation · Duy Tan University',
+    date:'July 2026 · Hanoi',
+    scale:'~2,500 registrants · 300+ teams',
+    type:'Award',
+    credentialId:'VAIC 2026 national finalist',
+    image:'award/vaic-2026.jpg',
+    description:'VAIC 2026 is an AI-native hackathon run as part of the Vietnam Innovation Challenge, built to grow a community of AI builders rather than to score isolated coding tasks. Teams work like a startup — AI, data, product, design, business — and ship a working AI product against one of eight national challenge tracks spanning finance & banking, healthcare, education, agriculture, public services, SMEs, innovation, and disaster prevention. Held 17–19 July 2026 at FPT Tower, Hanoi, the competition drew close to 2,500 registrations and over 300 teams, including international entries; our team finished in the Top 20.',
+    skills:['AI Product','Hackathon','Team Leadership','Applied AI']
+  },
+  {
+    id:'ai-quantum-hvtc',
+    tier:2,rank:'Tier II',rankLabel:'Quantum Prize',
+    title:'Quantum Prize (Giải Quantum)',
+    event:'AI-Quantum Challenge, Academy of Finance (Học viện Tài chính)',
+    issuer:'Academy of Finance (AOF)',
+    date:'2026 · Hanoi',
+    scale:'National · teams of 3–5 students',
+    type:'Award',
+    credentialId:'AI-Quantum Challenge award',
+    image:'award/ai-quantum-hvtc.jpg',
+    description:'The first edition of the Academy of Finance\'s national AI-Quantum Challenge, a competition applying artificial intelligence and quantum methods to economics, finance, and accounting. Teams of three to five students take a real problem — macro and market forecasting, credit scoring, fraud detection, robo-advisory, AML/KYC automation, or smart auditing — and carry it from concept and data sourcing through to a demonstrable prototype: a model, dashboard, web app, or chatbot. Awarded the Quantum Prize.',
+    skills:['Quantum Computing','Quantitative Finance','Machine Learning','Prototyping']
+  },
+  {
+    id:'coding-inspiration-jsclub',
+    tier:3,rank:'Tier III',rankLabel:'Third Prize',
+    title:'Third Prize',
+    event:'Coding Inspiration — JS Club, FPT University Hanoi',
+    issuer:'JS Club, FPT University Hanoi',
+    date:'Hanoi',
+    scale:'Northern Vietnam · teams of 4–5',
+    type:'Award',
+    credentialId:'Coding Inspiration third prize',
+    image:'award/coding-inspiration-jsclub.jpg',
+    description:'Coding Inspiration is the programming and product competition run by the JS Club (Japanese Bridge Engineers) at FPT University Hanoi, open to students across Northern Vietnam and backed by industry sponsors including FPT Software, 3S Intersoft, Rikei, SotaTek, and NewWave Solutions. Teams of four to five build and refine a complete software product — web, mobile, or desktop — through online qualifying and idea rounds before a live final at the FPT University Hoa Lac campus. Placed third overall.',
+    skills:['Software Development','Product Build','Teamwork','Problem Solving']
+  }
+];
 const writingNotes=[
   {id:'imbalanced-fraud-detection',type:'Technical Note',status:'Draft',date:'2026',title:'Fraud Detection Under Severe Class Imbalance',summary:'Notes on recall-first modelling, threshold tuning, and why accuracy is often misleading in financial fraud systems.',tags:['Fraud Detection','SMOTE','XGBoost','Recall'],body:['Financial fraud models fail quietly when they optimize for overall accuracy. The useful objective is usually recall under a controlled false-positive budget, because missed fraud is much more expensive than reviewing a small number of suspicious transactions.','This note compares resampling with SMOTE, class-weighted learning, and threshold calibration. The focus is not just training a strong model, but designing an evaluation loop that makes operational risk visible.','Planned expansion: add confusion-matrix slices, PR curves, and a short deployment checklist for real-time transaction scoring.']},
   {id:'vsa-bull-bear-trap',type:'Market Microstructure Note',status:'In progress',date:'2026',title:'Bull & Bear Trap Detection With Volume Spread Analysis',summary:'A research-style write-up for false breakout detection using volume anomalies, candle spread, and order book imbalance.',tags:['VSA','OHLCV','Order Book','Trading Systems'],body:['Bull and bear traps are not just visual chart patterns; they are liquidity events. A false breakout tends to combine price extension, unstable volume, and a quick reversal after participants are pulled into the wrong side.','The current prototype treats candle spread, relative volume, and bid/ask imbalance as a lightweight signal stack. This makes it possible to simulate trap conditions and test how the detector behaves under noisy market movement.','Planned expansion: compare hand-built VSA rules with supervised labelling and add examples from VN30F-style futures data.']},
@@ -1652,6 +1772,23 @@ function escHtml(v){return String(v).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&
 function certAsset(cert){return cert.file||cert.image||'';}
 function isPdfAsset(path){return /\.pdf($|[?#])/i.test(path);}
 function pdfView(path){return path?encodeURI(path)+'#toolbar=0&navpanes=0&scrollbar=0&view=FitH':'';}
+// Previews are pre-rendered JPEGs, never inline PDFs. Embedded PDFs need a native plugin, so
+// they silently render blank on iOS/Android and on desktops without one — and 15 live PDF
+// viewers on one page is what made this section crawl. The PDF stays reachable via the link.
+function certPreview(item){
+  if(item.preview)return item.preview;
+  const asset=certAsset(item);
+  if(!asset||!isPdfAsset(asset))return asset;
+  return asset.replace(/^certificate\//,'cert_preview/')
+              .replace(/^job_simulation\//,'job_preview/')
+              .replace(/\.pdf$/i,'.jpg');
+}
+function previewTag(item,label){
+  const src=certPreview(item);
+  return src
+    ? `<img src="${escHtml(encodeURI(src))}" alt="${escHtml(label)} preview" loading="lazy" decoding="async">`
+    : '';
+}
 const CERTS_PER_PAGE=8;
 let certPage=1;
 function renderCertificates(){
@@ -1660,10 +1797,8 @@ function renderCertificates(){
   certPage=Math.max(1,Math.min(certPage,totalPages));
   const visibleCerts=certificates.slice((certPage-1)*CERTS_PER_PAGE,certPage*CERTS_PER_PAGE);
   grid.innerHTML=visibleCerts.map(cert=>{
-    const asset=certAsset(cert);
-    const preview=isPdfAsset(asset)
-      ? `<iframe src="${escHtml(pdfView(asset))}" title="${escHtml(cert.title)} PDF preview" loading="lazy"></iframe>`
-      : `<img src="${escHtml(asset)}" alt="${escHtml(cert.title)} preview" loading="lazy">`;
+    const asset=certPreview(cert);
+    const preview=previewTag(cert,cert.title);
     return `
     <div class="cert-card reveal" role="button" tabindex="0" data-cert-id="${escHtml(cert.id)}">
       <div class="cert-thumb ${asset?'':'is-missing'}" data-issuer="${escHtml(cert.issuer)}">${preview}</div>
@@ -1686,13 +1821,33 @@ function renderCertificates(){
   if(next)next.disabled=certPage>=totalPages;
   if(window.certRevealObserver)grid.querySelectorAll('.cert-card').forEach(el=>window.certRevealObserver.observe(el));
 }
+function renderAwards(){
+  const grid=document.getElementById('award-grid');if(!grid)return;
+  grid.innerHTML=awards.map(aw=>`
+    <div class="award-card tier-${aw.tier} reveal" role="button" tabindex="0" data-cert-id="${escHtml(aw.id)}">
+      <div class="award-rank"><span class="award-medal"></span>${escHtml(aw.rank)}</div>
+      <div class="award-thumb is-missing" data-placeholder="Add ${escHtml(aw.image)}">
+        <img src="${escHtml(encodeURI(aw.image))}" alt="${escHtml(aw.title)} — ${escHtml(aw.event)}" loading="lazy" decoding="async">
+      </div>
+      <div class="award-tier">${escHtml(aw.rankLabel)}</div>
+      <div class="award-title">${escHtml(aw.title)}</div>
+      <div class="award-event">${escHtml(aw.event)}</div>
+      <div class="award-meta"><span>${escHtml(aw.date)}</span><span>${escHtml(aw.scale)}</span></div>
+      <div class="award-desc">${escHtml(aw.description)}</div>
+      <div class="award-tags">${aw.skills.map(s=>`<span class="tag">${escHtml(s)}</span>`).join('')}</div>
+    </div>`).join('');
+  grid.querySelectorAll('.award-thumb img').forEach(img=>{
+    img.addEventListener('load',()=>img.parentElement.classList.remove('is-missing'));
+    if(img.complete&&img.naturalWidth)img.parentElement.classList.remove('is-missing');
+  });
+  bindCursorFx(grid);
+  if(window.certRevealObserver)grid.querySelectorAll('.award-card').forEach(el=>window.certRevealObserver.observe(el));
+}
 function renderJobSimulations(){
   const grid=document.getElementById('job-grid');if(!grid)return;
   grid.innerHTML=jobSimulations.map(job=>{
-    const asset=certAsset(job);
-    const preview=isPdfAsset(asset)
-      ? `<iframe src="${escHtml(pdfView(asset))}" title="${escHtml(job.title)} PDF preview" loading="lazy"></iframe>`
-      : `<img src="${escHtml(asset)}" alt="${escHtml(job.title)} preview" loading="lazy">`;
+    const asset=certPreview(job);
+    const preview=previewTag(job,job.title);
     return `
     <div class="cert-card reveal" role="button" tabindex="0" data-cert-id="${escHtml(job.id)}">
       <div class="cert-thumb ${asset?'':'is-missing'}" data-issuer="${escHtml(job.issuer)}">${preview}</div>
@@ -1719,10 +1874,10 @@ function renderWriting(){
   bindCursorFx(grid);
 }
 function openCertificate(id){
-  const cert=certificates.concat(jobSimulations).find(item=>item.id===id),modal=document.getElementById('cert-modal');
+  const cert=certificates.concat(jobSimulations,awards).find(item=>item.id===id),modal=document.getElementById('cert-modal');
   if(!cert||!modal)return;
   const preview=document.getElementById('cert-modal-preview'),img=document.getElementById('cert-modal-img'),pdf=document.getElementById('cert-modal-pdf');
-  const asset=certAsset(cert),isPdf=isPdfAsset(asset);
+  const asset=certAsset(cert),shot=certPreview(cert);
   document.getElementById('cert-modal-type').textContent=cert.type;
   document.getElementById('cert-modal-title').textContent=cert.title;
   document.getElementById('cert-modal-issuer').textContent=cert.issuer;
@@ -1730,12 +1885,13 @@ function openCertificate(id){
   document.getElementById('cert-modal-id').textContent=cert.credentialId;
   document.getElementById('cert-modal-desc').textContent=cert.description;
   document.getElementById('cert-modal-skills').innerHTML=cert.skills.map(skill=>`<span class="tag">${escHtml(skill)}</span>`).join('');
-  preview.dataset.title=cert.title;preview.classList.toggle('is-pdf',isPdf);preview.classList.toggle('is-missing',!asset);
-  img.alt=cert.title+' certificate preview';img.removeAttribute('src');pdf.removeAttribute('src');
+  const isAward=cert.type==='Award';
+  preview.dataset.title=cert.title;preview.classList.remove('is-pdf');preview.classList.toggle('is-missing',!shot);
+  img.alt=cert.title+(isAward?' award photo':' certificate preview');img.removeAttribute('src');pdf.removeAttribute('src');
   img.onload=()=>preview.classList.remove('is-missing');img.onerror=()=>preview.classList.add('is-missing');
-  if(isPdf)pdf.src=pdfView(asset);
-  else if(asset)img.src=asset;
+  if(shot)img.src=encodeURI(shot);
   const link=document.getElementById('cert-modal-link');
+  link.textContent=isAward?'View award':'View certificate';
   const href=cert.url&&cert.url!=='#'?cert.url:asset;
   if(href){link.href=href;link.classList.remove('is-disabled');}
   else{link.href='#';link.classList.add('is-disabled');}
@@ -1765,6 +1921,7 @@ function closeWriting(){
   modal.setAttribute('aria-hidden','true');
   document.body.style.overflow='';
 }
+renderAwards();
 renderCertificates();
 renderJobSimulations();
 renderWriting();
@@ -1782,11 +1939,13 @@ if(certPrev)certPrev.addEventListener('click',()=>changeCertPage(-1));
 if(certNext)certNext.addEventListener('click',()=>changeCertPage(1));
 function bindCredentialGrid(grid){
   if(!grid)return;
-  grid.addEventListener('click',e=>{const card=e.target.closest('.cert-card');if(card)openCertificate(card.dataset.certId);});
-  grid.addEventListener('keydown',e=>{const card=e.target.closest('.cert-card');if(card&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openCertificate(card.dataset.certId);}});
+  const sel='.cert-card,.award-card';
+  grid.addEventListener('click',e=>{const card=e.target.closest(sel);if(card)openCertificate(card.dataset.certId);});
+  grid.addEventListener('keydown',e=>{const card=e.target.closest(sel);if(card&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openCertificate(card.dataset.certId);}});
 }
 bindCredentialGrid(document.getElementById('cert-grid'));
 bindCredentialGrid(document.getElementById('job-grid'));
+bindCredentialGrid(document.getElementById('award-grid'));
 const writingGrid=document.getElementById('writing-grid');
 if(writingGrid){
   writingGrid.addEventListener('click',e=>{const card=e.target.closest('.writing-card');if(card)openWriting(card.dataset.writingId);});
@@ -1809,7 +1968,7 @@ const io=new IntersectionObserver(entries=>entries.forEach(e=>{
   }
 }),{threshold:.1});
 window.certRevealObserver=io;
-document.querySelectorAll('.reveal,.sk-card,.exp-card,.proj-card,.cert-card,.writing-card').forEach(el=>io.observe(el));
+document.querySelectorAll('.reveal,.sk-card,.exp-card,.proj-card,.cert-card,.award-card,.writing-card').forEach(el=>io.observe(el));
 
 /*  BPM PULSE  */
 let bpm=72;
@@ -2183,7 +2342,6 @@ setInterval(()=>{const el=document.getElementById('chart-live');if(el){el.style.
   /*  Main loop  */
   let lastTickTime=0;
   function loop(ts){
-    requestAnimationFrame(loop);
     const interval=1000/speed;
     if(running && ts-lastTickTime>interval){tick();lastTickTime=ts;}
     frameCount++;
@@ -2192,7 +2350,7 @@ setInterval(()=>{const el=document.getElementById('chart-live');if(el){el.style.
     }
     if(frameCount%8===0){updateOrderBook();updateStats();}
   }
-  requestAnimationFrame(loop);
+  gateLoop(document.getElementById('bb-demo'),loop,30);
 
   // Initial alerts
   setTimeout(()=>{
