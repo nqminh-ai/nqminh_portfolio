@@ -33,6 +33,10 @@ body{background:var(--void);color:var(--text);font-family:var(--sans);overflow-x
 /* CURSOR */
 #cur{position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--gold);border-radius:50%;mix-blend-mode:screen;transition:width .12s,height .12s}
 #cur-ring{position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);width:38px;height:38px;border:1px solid rgba(201,168,76,.4);border-radius:50%;transition:all .15s ease}
+/* Outline instead of box-shadow so it isn't clipped by a card's own overflow:hidden thumbnail */
+.gesture-hover{outline:2px solid var(--gold);outline-offset:4px}
+@keyframes gestureClickPulse{0%{box-shadow:0 0 0 0 rgba(201,168,76,.55)}100%{box-shadow:0 0 0 24px rgba(201,168,76,0)}}
+#cur-ring.is-gesture-click{animation:gestureClickPulse .4s ease-out}
 
 /* FIXED BG CANVASES */
 #circuit-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.85}
@@ -249,30 +253,43 @@ section{position:relative;z-index:1}
 .cert-issuer,.cert-date{font-size:.72rem;color:var(--text);line-height:1.55}
 .cert-date{margin-top:.25rem;color:var(--muted)}
 
-/*  AWARDS  */
-.award-sec{background:linear-gradient(to bottom,transparent,rgba(201,168,76,.04),transparent)}
-.award-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:1.5rem;align-items:stretch}
-.award-card{position:relative;background:rgba(12,10,26,.88);border:1px solid var(--aw-line);padding:1.05rem;display:flex;flex-direction:column;text-align:left;cursor:none;transition:transform .25s,border-color .25s,box-shadow .25s;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
-.award-card:hover,.award-card:focus-visible{outline:0;transform:translateY(-5px);border-color:var(--aw);box-shadow:0 14px 40px -22px var(--aw)}
-.award-card.tier-1{--aw:#E8C96A;--aw-line:rgba(232,201,106,.34);--aw-soft:rgba(232,201,106,.1)}
-.award-card.tier-2{--aw:#C9D4E4;--aw-line:rgba(201,212,228,.28);--aw-soft:rgba(201,212,228,.09)}
-.award-card.tier-3{--aw:#C98A5E;--aw-line:rgba(201,138,94,.28);--aw-soft:rgba(201,138,94,.09)}
-/* Rank chip doubles as the tier marker so the three levels read at a glance, not from the text */
-.award-rank{position:absolute;top:0;right:0;display:flex;align-items:center;gap:.35rem;padding:.34rem .6rem;background:var(--aw-soft);border-left:1px solid var(--aw-line);border-bottom:1px solid var(--aw-line);font-family:var(--mono);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:var(--aw)}
-.award-medal{width:15px;height:15px;flex:none;border-radius:50%;background:radial-gradient(circle at 34% 30%,var(--aw),rgba(0,0,0,.65));box-shadow:0 0 9px -1px var(--aw)}
-.award-thumb{position:relative;aspect-ratio:1.5/1;border:1px solid var(--aw-line);overflow:hidden;margin-bottom:.95rem;background:linear-gradient(135deg,var(--aw-soft),rgba(6,4,16,.9)),repeating-linear-gradient(90deg,rgba(201,168,76,.06) 0 1px,transparent 1px 20px)}
-.award-thumb img{width:100%;height:100%;display:block;object-fit:cover}
+/*  AWARDS — physical winner's podium: three risers of different height, 1st in the
+    middle and tallest, photo card floating above each block, big carved rank numeral.  */
+.award-sec{background:linear-gradient(to bottom,transparent,rgba(201,168,76,.045),transparent);overflow:visible}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:1.85rem;flex-wrap:wrap;padding:1.5rem 0 0}
+.podium-item{position:relative;display:flex;flex-direction:column;align-items:center;width:210px;cursor:none}
+.podium-item.rank-1{width:240px;order:2;--pd:#E8C96A;--pd-dk:#7c621f;--pd-line:rgba(232,201,106,.44);--pd-soft:rgba(232,201,106,.14)}
+.podium-item.rank-2{order:1;--pd:#C9D4E4;--pd-dk:#4d5a6b;--pd-line:rgba(201,212,228,.34);--pd-soft:rgba(201,212,228,.1)}
+.podium-item.rank-3{order:3;--pd:#C98A5E;--pd-dk:#5e3c22;--pd-line:rgba(201,138,94,.34);--pd-soft:rgba(201,138,94,.1)}
+.podium-photo-wrap{position:relative;width:100%}
+.podium-medal{position:absolute;left:50%;top:-15px;transform:translateX(-50%);width:32px;height:32px;z-index:3;border-radius:50%;background:radial-gradient(circle at 33% 28%,#fff,var(--pd) 55%,var(--pd-dk));box-shadow:0 0 16px -2px var(--pd),0 3px 7px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:.64rem;color:#181206}
+.podium-photo{position:relative;aspect-ratio:1.3/1;border:1px solid var(--pd-line);overflow:hidden;background:linear-gradient(150deg,var(--pd-soft),rgba(6,4,16,.94)),repeating-linear-gradient(115deg,rgba(255,255,255,.035) 0 1px,transparent 1px 16px);transition:transform .3s cubic-bezier(.2,.8,.3,1),box-shadow .3s}
+.podium-item.rank-1 .podium-photo{box-shadow:0 0 34px -14px var(--pd)}
+.podium-item:hover .podium-photo,.podium-item:focus-visible .podium-photo{transform:translateY(-6px);box-shadow:0 18px 38px -16px var(--pd)}
+.podium-photo img{width:100%;height:100%;display:block;object-fit:cover}
 /* No photo yet → the frame still reads as a deliberate placeholder rather than a broken image */
-.award-thumb.is-missing img{display:none}
-.award-thumb.is-missing::before{content:attr(data-placeholder);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:1rem;text-align:center;font-family:var(--mono);font-size:.52rem;letter-spacing:.14em;line-height:1.9;color:rgba(240,235,224,.42)}
-.award-tier{font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--aw);margin-bottom:.4rem}
-.award-title{font-family:var(--sans);font-size:.94rem;font-weight:600;line-height:1.4;color:var(--ivory);margin-bottom:.3rem}
-.award-event{font-family:var(--serif);font-size:.82rem;font-style:italic;color:var(--gold);margin-bottom:.6rem}
-.award-meta{display:flex;flex-wrap:wrap;gap:.35rem .8rem;font-family:var(--mono);font-size:.55rem;letter-spacing:.05em;color:var(--muted);margin-bottom:.65rem}
-.award-desc{font-size:.75rem;line-height:1.65;color:var(--text);margin-bottom:.85rem}
-.award-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:auto}
-.award-tags .tag{font-family:var(--mono);font-size:.5rem;letter-spacing:.06em;padding:.2rem .45rem;border:1px solid var(--aw-line);color:var(--aw)}
-@media(max-width:620px){.award-grid{grid-template-columns:1fr}}
+.podium-photo.is-missing img{display:none}
+.podium-photo.is-missing::before{content:attr(data-placeholder);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:.9rem;text-align:center;font-family:var(--mono);font-size:.5rem;letter-spacing:.13em;line-height:1.85;color:rgba(240,235,224,.4)}
+.podium-card{margin-top:.85rem;text-align:center;padding:0 .25rem}
+.podium-tier{font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--pd);margin-bottom:.35rem}
+.podium-title{font-family:var(--sans);font-weight:600;font-size:.86rem;line-height:1.4;color:var(--ivory);margin-bottom:.25rem}
+.podium-event{font-family:var(--serif);font-style:italic;font-size:.72rem;line-height:1.4;color:var(--pd)}
+/* The riser itself: a solid block with the rank carved into the face, like the reference photos */
+.podium-riser{position:relative;width:100%;margin-top:1.1rem;border-radius:5px 5px 0 0;background:linear-gradient(180deg,var(--pd) 0%,var(--pd-dk) 100%);display:flex;align-items:flex-start;justify-content:center;padding-top:.5rem;box-shadow:inset 0 -16px 24px -12px rgba(0,0,0,.4)}
+.podium-riser::before{content:'';position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0))}
+.podium-riser-num{font-family:var(--sans);font-weight:800;font-size:2.3rem;color:rgba(8,6,16,.55);letter-spacing:-.02em;text-shadow:0 1px 0 rgba(255,255,255,.28)}
+.podium-item.rank-1 .podium-riser{height:8.5rem}
+.podium-item.rank-2 .podium-riser{height:6.1rem}
+.podium-item.rank-3 .podium-riser{height:4.7rem}
+.podium-item.rank-1 .podium-riser-num{font-size:3rem}
+@media(max-width:760px){
+  .podium{flex-direction:column;align-items:stretch;gap:1.1rem}
+  .podium-item,.podium-item.rank-1{order:0;width:100%}
+  .podium-riser{height:2.5rem!important;border-radius:5px;align-items:center;padding-top:0}
+  .podium-riser-num{font-size:1.25rem!important}
+  .podium-item.rank-1 .podium-riser-num{font-size:1.25rem!important}
+  .podium-photo{aspect-ratio:2.1/1}
+}
 .cert-modal{position:fixed;inset:0;z-index:780;display:none;align-items:center;justify-content:center;padding:1.25rem;background:rgba(4,3,12,.78);backdrop-filter:blur(14px)}
 .cert-modal.is-open{display:flex}
 .cert-dialog{position:relative;width:min(980px,100%);max-height:min(760px,calc(100vh - 2.5rem));overflow:auto;background:var(--panel);border:1px solid rgba(201,168,76,.28);clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));box-shadow:0 28px 80px rgba(0,0,0,.55)}
@@ -488,7 +505,7 @@ footer .ft-serif{font-family:var(--serif);font-style:italic;font-size:.82rem;col
     <span id="gesture-mode">Idle</span>
     <span id="gesture-readout">--</span>
   </div>
-  <div class="gesture-help" id="gesture-help">Raise your index finger and move it up or down to scroll · Pinch thumb + index to zoom · Lower your hand to pause.</div>
+  <div class="gesture-help" id="gesture-help">Point your finger up or down to scroll · Hold it level to aim the cursor, then pinch to click · Pinch anywhere else to zoom.</div>
 </div>
 
 <div id="site-stage">
@@ -500,9 +517,9 @@ footer .ft-serif{font-family:var(--serif);font-style:italic;font-size:.82rem;col
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#experience">Experience</a></li>
+    <li><a href="#awards">Awards</a></li>
     <li><a href="#photography">Photos</a></li>
     <li><a href="#projects">Projects</a></li>
-    <li><a href="#awards">Awards</a></li>
     <li><a href="#certificates">Certs</a></li>
     <li><a href="#job-simulations">Sims</a></li>
     <li><a href="#writing">Writing</a></li>
@@ -679,10 +696,21 @@ footer .ft-serif{font-family:var(--serif);font-style:italic;font-size:.82rem;col
   </div>
 </section>
 
+<!--  AWARDS — winner's podium, 1st tallest and centered  -->
+<section id="awards" class="sec-wrap award-sec">
+  <div class="sec-head">
+    <span class="sec-num">04</span>
+    <span class="sec-title">Awards</span>
+    <div class="sec-line"></div>
+    <span class="sec-note"> &nbsp;podium finish</span>
+  </div>
+  <div class="podium" id="award-grid"></div>
+</section>
+
 <!--  SOCIAL ACTIVITIES  -->
 <section id="social-activities" class="sec-wrap">
   <div class="sec-head">
-    <span class="sec-num">03.5</span>
+    <span class="sec-num">04.5</span>
     <span class="sec-title">Social Activities</span>
     <div class="sec-line"></div>
     <span class="sec-note"> &nbsp;allegro</span>
@@ -705,7 +733,7 @@ footer .ft-serif{font-family:var(--serif);font-style:italic;font-size:.82rem;col
 <!--  PHOTOGRAPHY  -->
 <section id="photography" class="sec-wrap photo-sec">
   <div class="sec-head">
-    <span class="sec-num">04</span>
+    <span class="sec-num">05</span>
     <span class="sec-title">Photography</span>
     <div class="sec-line"></div>
     <span class="sec-note"> &nbsp;frames in motion</span>
@@ -774,7 +802,7 @@ footer .ft-serif{font-family:var(--serif);font-style:italic;font-size:.82rem;col
 <!--  PROJECTS  -->
 <section id="projects" class="sec-wrap">
   <div class="sec-head">
-    <span class="sec-num">05</span>
+    <span class="sec-num">06</span>
     <span class="sec-title">Projects</span>
     <div class="sec-line"></div>
     <span class="sec-note"> &nbsp;opus magna</span>
@@ -789,7 +817,7 @@ footer .ft-serif{font-family:var(--serif);font-style:italic;font-size:.82rem;col
 <!--  BULL & BEAR TRAP DEMO  -->
 <section id="bb-demo" class="sec-wrap" style="background:linear-gradient(to bottom,transparent,rgba(201,168,76,.02),transparent)">
   <div class="sec-head reveal">
-    <span class="sec-num">05.5</span>
+    <span class="sec-num">06.5</span>
     <span class="sec-title">Live Demo — Bull & Bear Trap</span>
     <div class="sec-line"></div>
     <span class="sec-note"> &nbsp;VSA · OHLCV · Order Book</span>
@@ -890,18 +918,6 @@ footer .ft-serif{font-family:var(--serif);font-style:italic;font-size:.82rem;col
     <div class="bb-stat"><div class="bb-stat-n" id="stat-acc">—</div><div class="bb-stat-l">VSA Accuracy</div></div>
     <div class="bb-stat"><div class="bb-stat-n" id="stat-candles">0</div><div class="bb-stat-l">Candles Processed</div></div>
   </div>
-</section>
-
-<!--  AWARDS  -->
-<section id="awards" class="sec-wrap award-sec">
-  <div class="sec-head">
-    <span class="sec-num">06</span>
-    <span class="sec-title">Awards</span>
-    <div class="sec-line"></div>
-    <span class="sec-note"> &nbsp;competition results</span>
-  </div>
-  <div class="cert-group-label">Competition Awards — three tiers</div>
-  <div class="award-grid" id="award-grid"></div>
 </section>
 
 <!--  CERTIFICATES  -->
@@ -1052,25 +1068,29 @@ function gateLoop(target,draw,fps){
 
 /*  CURSOR  */
 const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
-let mx=0,my=0,rx=0,ry=0;
+let mx=0,my=0,rx=0,ry=0,curRaf=0;
 /* The trailing ring only needs frames while it is still catching up to the pointer. Once it
-   settles the loop parks itself, so an idle page costs nothing. */
+   settles the loop parks itself, so an idle page costs nothing. nudgeCursor() is exposed at
+   script scope so the gesture tracker below can drive the same cursor the mouse does. */
+function cursorStep(){
+  rx+=(mx-rx)*.14;ry+=(my-ry)*.14;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  if(Math.abs(mx-rx)>.5||Math.abs(my-ry)>.5)curRaf=requestAnimationFrame(cursorStep);
+  else curRaf=0;
+}
+function nudgeCursor(x,y){
+  mx=x;my=y;
+  if(!curRaf)curRaf=requestAnimationFrame(cursorStep);
+}
 const FINE_POINTER=!(window.matchMedia&&window.matchMedia('(hover: none)').matches);
 if(FINE_POINTER){
-  let curRaf=0;
-  const step=()=>{
-    rx+=(mx-rx)*.14;ry+=(my-ry)*.14;
-    cur.style.left=mx+'px';cur.style.top=my+'px';
-    ring.style.left=rx+'px';ring.style.top=ry+'px';
-    if(Math.abs(mx-rx)>.5||Math.abs(my-ry)>.5)curRaf=requestAnimationFrame(step);
-    else curRaf=0;
-  };
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(!curRaf)curRaf=requestAnimationFrame(step);},{passive:true});
+  document.addEventListener('mousemove',e=>nudgeCursor(e.clientX,e.clientY),{passive:true});
 }else{
   cur.style.display='none';ring.style.display='none';
 }
 function bindCursorFx(root=document){
-  root.querySelectorAll('a,button,.sk-card,.proj-card,.exp-card,.cert-card,.award-card,.cert-page-btn,.writing-card').forEach(el=>{
+  root.querySelectorAll('a,button,.sk-card,.proj-card,.exp-card,.cert-card,.podium-item,.cert-page-btn,.writing-card').forEach(el=>{
     if(el.dataset.cursorBound)return;
     el.dataset.cursorBound='1';
     el.addEventListener('mouseenter',()=>{cur.style.width='13px';cur.style.height='13px';ring.style.width='50px';ring.style.height='50px';ring.style.borderColor='rgba(201,168,76,.6)'});
@@ -1095,10 +1115,15 @@ bindCursorFx();
   const cdn='https://cdn.jsdelivr.net/npm/@mediapipe/hands/';
   const links=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
   let stream=null,hands=null,rafId=null,libPromise=null;
-  let running=false,busy=false,lastY=null,smoothY=null,activeFrames=0;
+  let running=false,busy=false;
   let pinchFrames=0,lastSend=0;
-  const PINCH_ON=.55,PINCH_OFF=.95,PINCH_HOLD=3,SEND_FPS=30; // pinch must stay closed for PINCH_HOLD frames before zoom commits
-  let zooming=false,pinchBase=0,zoomBase=1,zoomLevel=1;
+  const PINCH_ON=.55,PINCH_OFF=.95,PINCH_HOLD=3,SEND_FPS=30; // pinch must stay closed for PINCH_HOLD frames before zoom/click commits
+  let zooming=false,pinchBase=0,zoomBase=1,zoomLevel=1,pinchActionTaken=false;
+  let hoverEl=null,smoothCX=null,smoothCY=null;
+  // Zones are read off the raw index-tip y (0=top of frame, 1=bottom): point up/down into the
+  // outer thirds to scroll continuously; the middle third is neutral — cursor + click live there.
+  const TOP_ZONE=.32,BOTTOM_ZONE=.68,SCROLL_SPEED=26;
+  const CLICKABLE_SEL='a[href],button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),[role="button"],[tabindex]:not([tabindex="-1"])';
   const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 
   function setState(text,state='idle'){
@@ -1200,14 +1225,38 @@ bindCursorFx();
   }
 
   function resetTracking(text='Point to scroll'){
-    activeFrames=0;
-    lastY=null;
-    smoothY=null;
     zooming=false;
     pinchFrames=0;
+    pinchActionTaken=false;
+    if(hoverEl){hoverEl.classList.remove('gesture-hover');hoverEl=null;shrinkCursor();}
+    smoothCX=smoothCY=null;
     hud.classList.remove('is-tracking');
     setState(text);
     setMeta('Idle');
+  }
+
+  // Cursor + hover tracking runs every frame regardless of pose, so the highlighted target
+  // stays current right up to the moment a pinch is confirmed (index curls in fast during a pinch).
+  function growCursor(){cur.style.width='13px';cur.style.height='13px';ring.style.width='50px';ring.style.height='50px';ring.style.borderColor='rgba(201,168,76,.6)';}
+  function shrinkCursor(){cur.style.width='6px';cur.style.height='6px';ring.style.width='38px';ring.style.height='38px';ring.style.borderColor='rgba(201,168,76,.4)';}
+  function flashClick(){ring.classList.remove('is-gesture-click');void ring.offsetWidth;ring.classList.add('is-gesture-click');}
+
+  function updateGestureCursor(lm){
+    // Mirrored on x to match the selfie-view video feed: moving your hand right moves the cursor right.
+    const cx=clamp((1-lm[8].x)*window.innerWidth,0,window.innerWidth-1);
+    const cy=clamp(lm[8].y*window.innerHeight,0,window.innerHeight-1);
+    smoothCX=smoothCX===null?cx:smoothCX*.55+cx*.45;
+    smoothCY=smoothCY===null?cy:smoothCY*.55+cy*.45;
+    nudgeCursor(smoothCX,smoothCY);
+    const hit=document.elementFromPoint(smoothCX,smoothCY);
+    const target=hit&&hit.closest(CLICKABLE_SEL);
+    if(target!==hoverEl){
+      if(hoverEl)hoverEl.classList.remove('gesture-hover');
+      hoverEl=target||null;
+      if(hoverEl){hoverEl.classList.add('gesture-hover');growCursor();}
+      else shrinkCursor();
+    }
+    return hoverEl;
   }
 
   function handleResults(results){
@@ -1216,58 +1265,62 @@ bindCursorFx();
     const lm=results.multiHandLandmarks&&results.multiHandLandmarks[0];
     if(!lm){resetTracking('Hand not found');return;}
 
+    const hovered=updateGestureCursor(lm);
     const indexUp=fingerUp(lm,8,6);
     const middleUp=fingerUp(lm,12,10);
-    // ROOT-CAUSE FIX 1 — pointing = index extended + middle folded, ring/pinky IGNORED.
-    // The old test required all of middle/ring/pinky down; MediaPipe constantly flickers those
-    // joints, so a clean point almost never registered and scrolling barely worked.
+    // Pointing = index extended + middle folded, ring/pinky ignored (MediaPipe flickers those
+    // joints too much to gate on). Pointing pose drives the up/down scroll zones; curling the
+    // index toward the thumb (not pointing) is what arms the pinch → click-or-zoom below.
     const pointing=indexUp&&!middleUp;
     const scale=handScale(lm);
     const pinchRatio=dist(lm[4],lm[8])/scale; // thumb-tip ↔ index-tip distance, normalised by palm width
 
-    // ROOT-CAUSE FIX 2 — only evaluate a pinch when NOT pointing.
-    // A scroll pose raises the index straight up; a pinch curls the index toward the thumb.
-    // Separating the two by pose removes the false pinch that used to hijack scrolling whenever
-    // the thumb sat near a pointing finger. Debounce + hysteresis kill single-frame flicker.
     if(!pointing){
       if(pinchRatio<PINCH_ON)pinchFrames++;
-      else if(pinchRatio>PINCH_OFF){pinchFrames=0;zooming=false;}
-      if(zooming||pinchFrames>=PINCH_HOLD){
-        if(!zooming){zooming=true;pinchBase=pinchRatio;zoomBase=zoomLevel;activeFrames=0;lastY=null;smoothY=null;}
+      else if(pinchRatio>PINCH_OFF){pinchFrames=0;zooming=false;pinchActionTaken=false;}
+
+      // A pinch that just closed decides its own job: click whatever the cursor is sitting on,
+      // or — if nothing's under it — fall through to spread-to-zoom like before.
+      if(pinchFrames>=PINCH_HOLD&&!zooming&&!pinchActionTaken){
+        if(hovered){
+          hovered.click();
+          pinchActionTaken=true;
+          flashClick();
+        }else{
+          zooming=true;pinchBase=pinchRatio;zoomBase=zoomLevel;
+        }
+      }
+
+      hud.classList.add('is-tracking');
+      if(zooming){
         // Spread fingers (ratio grows past base) → zoom in; bring together → zoom out.
         const targetZoom=clamp(zoomBase+(pinchRatio-pinchBase)*.95,.72,1.45);
         zoomLevel=zoomLevel*.7+targetZoom*.3; // low-pass so zoom glides instead of snapping
         applyZoom();
-        hud.classList.add('is-tracking');
         setState('Pinch zoom','tracking');
         setMeta('Zoom',Math.round(zoomLevel*100)+'%');
-        return;
+      }else if(pinchActionTaken){
+        setState('Clicked','tracking');
+        setMeta('Release to continue','—');
+      }else{
+        setState(hovered?'Ready to click':'Curl to pinch','tracking');
+        setMeta(hovered?'Target locked':'Idle',hovered?'PINCH':'--');
       }
-    }else{
-      pinchFrames=0;zooming=false;
+      return;
     }
 
-    if(!pointing){resetTracking('Point to scroll');return;}
-
-    activeFrames++;
-    const y=lm[8].y;
-    // Heavier smoothing (.82/.18) than before: trades a touch of latency for far less jitter,
-    // so the page glides under an intentional move instead of twitching on hand tremor.
-    smoothY=smoothY===null?y:smoothY*.82+y*.18;
-    let mode='Hold steady',readout='READY';
-    if(activeFrames>3&&lastY!==null){
-      const dy=smoothY-lastY;
-      const deadMove=.010; // dead zone: ignore micro-tremor so a still finger never drifts the page
-      if(Math.abs(dy)>deadMove){
-        const strength=clamp((Math.abs(dy)-deadMove)/.045,0,1);
-        const eased=strength*strength*(3-2*strength); // smoothstep: gentle near the dead zone, firmer with intent
-        const delta=clamp(Math.sign(dy)*eased*window.innerHeight*.075,-48,48);
-        window.scrollBy(0,delta);
-        mode=delta>0?'Scroll down':'Scroll up';
-        readout=Math.round(strength*100)+'%';
-      }
+    pinchFrames=0;zooming=false;pinchActionTaken=false;
+    const ty=lm[8].y;
+    let mode=hovered?'Aim & pinch to click':'Point up/down to scroll',readout=hovered?'TARGET':'--';
+    if(ty<TOP_ZONE){
+      const strength=clamp((TOP_ZONE-ty)/TOP_ZONE,0,1);
+      window.scrollBy(0,-strength*SCROLL_SPEED);
+      mode='Scroll up';readout=Math.round(strength*100)+'%';
+    }else if(ty>BOTTOM_ZONE){
+      const strength=clamp((ty-BOTTOM_ZONE)/(1-BOTTOM_ZONE),0,1);
+      window.scrollBy(0,strength*SCROLL_SPEED);
+      mode='Scroll down';readout=Math.round(strength*100)+'%';
     }
-    lastY=smoothY;
     hud.classList.add('is-tracking');
     setState('Tracking finger','tracking');
     setMeta(mode,readout);
@@ -1321,7 +1374,7 @@ bindCursorFx();
       hud.classList.add('is-ready');
       setState('Point to scroll');
       setMeta('Idle');
-      setHelp('Raise your index finger and move it up or down to scroll · Pinch thumb + index to zoom · Lower your hand to pause.');
+      setHelp('Point your finger up or down to scroll · Hold it level to aim the cursor, then pinch to click · Pinch anywhere else to zoom.');
       processFrame();
     }catch(err){
       stopGesture(false);
@@ -1351,7 +1404,7 @@ bindCursorFx();
     btn.setAttribute('aria-pressed','false');
     hud.classList.remove('is-ready','is-tracking','is-loading');
     resetTracking(reset?'Camera off':'');
-    if(reset){setState('Camera off');setMeta('Idle');setHelp('Raise your index finger and move it up or down to scroll · Pinch thumb + index to zoom · Lower your hand to pause.');clearGestureCanvas();}
+    if(reset){setState('Camera off');setMeta('Idle');setHelp('Point your finger up or down to scroll · Hold it level to aim the cursor, then pinch to click · Pinch anywhere else to zoom.');clearGestureCanvas();}
   }
 
   btn.addEventListener('click',startGesture);
@@ -1823,25 +1876,28 @@ function renderCertificates(){
 }
 function renderAwards(){
   const grid=document.getElementById('award-grid');if(!grid)return;
+  // DOM order stays tier 1,2,3 (source order); CSS `order` moves 1st to the visual center.
   grid.innerHTML=awards.map(aw=>`
-    <div class="award-card tier-${aw.tier} reveal" role="button" tabindex="0" data-cert-id="${escHtml(aw.id)}">
-      <div class="award-rank"><span class="award-medal"></span>${escHtml(aw.rank)}</div>
-      <div class="award-thumb is-missing" data-placeholder="Add ${escHtml(aw.image)}">
-        <img src="${escHtml(encodeURI(aw.image))}" alt="${escHtml(aw.title)} — ${escHtml(aw.event)}" loading="lazy" decoding="async">
+    <div class="podium-item rank-${aw.tier} reveal" role="button" tabindex="0" data-cert-id="${escHtml(aw.id)}">
+      <div class="podium-photo-wrap">
+        <div class="podium-medal">${aw.tier}</div>
+        <div class="podium-photo is-missing" data-placeholder="Add ${escHtml(aw.image)}">
+          <img src="${escHtml(encodeURI(aw.image))}" alt="${escHtml(aw.title)} — ${escHtml(aw.event)}" loading="lazy" decoding="async">
+        </div>
       </div>
-      <div class="award-tier">${escHtml(aw.rankLabel)}</div>
-      <div class="award-title">${escHtml(aw.title)}</div>
-      <div class="award-event">${escHtml(aw.event)}</div>
-      <div class="award-meta"><span>${escHtml(aw.date)}</span><span>${escHtml(aw.scale)}</span></div>
-      <div class="award-desc">${escHtml(aw.description)}</div>
-      <div class="award-tags">${aw.skills.map(s=>`<span class="tag">${escHtml(s)}</span>`).join('')}</div>
+      <div class="podium-card">
+        <div class="podium-tier">${escHtml(aw.rankLabel)}</div>
+        <div class="podium-title">${escHtml(aw.title)}</div>
+        <div class="podium-event">${escHtml(aw.event)}</div>
+      </div>
+      <div class="podium-riser"><span class="podium-riser-num">${aw.tier}</span></div>
     </div>`).join('');
-  grid.querySelectorAll('.award-thumb img').forEach(img=>{
+  grid.querySelectorAll('.podium-photo img').forEach(img=>{
     img.addEventListener('load',()=>img.parentElement.classList.remove('is-missing'));
     if(img.complete&&img.naturalWidth)img.parentElement.classList.remove('is-missing');
   });
   bindCursorFx(grid);
-  if(window.certRevealObserver)grid.querySelectorAll('.award-card').forEach(el=>window.certRevealObserver.observe(el));
+  if(window.certRevealObserver)grid.querySelectorAll('.podium-item').forEach(el=>window.certRevealObserver.observe(el));
 }
 function renderJobSimulations(){
   const grid=document.getElementById('job-grid');if(!grid)return;
@@ -1939,7 +1995,7 @@ if(certPrev)certPrev.addEventListener('click',()=>changeCertPage(-1));
 if(certNext)certNext.addEventListener('click',()=>changeCertPage(1));
 function bindCredentialGrid(grid){
   if(!grid)return;
-  const sel='.cert-card,.award-card';
+  const sel='.cert-card,.podium-item';
   grid.addEventListener('click',e=>{const card=e.target.closest(sel);if(card)openCertificate(card.dataset.certId);});
   grid.addEventListener('keydown',e=>{const card=e.target.closest(sel);if(card&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openCertificate(card.dataset.certId);}});
 }
@@ -1968,7 +2024,7 @@ const io=new IntersectionObserver(entries=>entries.forEach(e=>{
   }
 }),{threshold:.1});
 window.certRevealObserver=io;
-document.querySelectorAll('.reveal,.sk-card,.exp-card,.proj-card,.cert-card,.award-card,.writing-card').forEach(el=>io.observe(el));
+document.querySelectorAll('.reveal,.sk-card,.exp-card,.proj-card,.cert-card,.podium-item,.writing-card').forEach(el=>io.observe(el));
 
 /*  BPM PULSE  */
 let bpm=72;
